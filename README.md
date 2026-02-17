@@ -1,25 +1,41 @@
-# EBAC Projeto Parceria: Previsão Inadimplência
+# EBAC Projeto Parceria: Análise Inadimplência Cartão de Crédito
 
-![Dist Default](imgs/dist_default.png)
+Objetivo: Prever default (16%) em clientes fintech BR para reduzir perdas R$40bi/ano.
 
-## Coleta Dados
-- Dataset: credito.csv (10k registros ANP/fintech BR)
-- Fonte: https://raw.githubusercontent.com/andre-marcos-perez/ebac-course-utils/main/dataset/credito.csv
+## 1. Coleta de Dados
+- Dataset: `dados/credito.csv` (10.127 registros)
+- Colunas: default (target), limite_credito, valor_transacoes_12m, idade, sexo etc.
+- Fonte: EBAC utils (real-like dados cartões BR)
 
-## Tratamento
-- Convertido limite_credito/valor_transacoes_12m (, → . float)
-- Remove duplicatas/extremos | Shape final: 10.127 linhas
-- Default: 16% (1.627 inadimplentes)
+## 2. Tratamento de Dados
+- Removidas duplicatas/extremos (idade>=18)
+- Convertidas vírgulas BR → float: limite_credito, valor_transacoes_12m
+- Shape final: 10.127 linhas | `dados/tratado.csv`
+- dtypes: limite_credito float64 ✅
 
-## EDA Insights
-| Métrica | Adimpl (0) | Inadimpl (1) |
-|---------|------------|--------------|
-| Limite  | R$13k     | R$11k       |
-| Trans 12m | R$2.5k   | R$2.2k     |
+## 3. Análise Exploratória (EDA)
+Taxa default: **16.07%** (1.627 inadimplentes)
 
-Corr default: limite=-0.15 (limite alto → menor risco)
+| Métrica | Adimplentes (0) | Inadimplentes (1) |
+|---------|-----------------|-------------------|
+| Limite Crédito | R$ 13.000 | R$ 11.000 |
+| Transações 12m | R$ 2.500 | R$ 2.200 |
+| Qtd Transações | 35 | 32 |
 
-![Box Limite](imgs/box_limite_default.png)
-![Heatmap](imgs/heatmap_default.png)
+**Correlações com default**:
+- limite_credito: -0.15 (limite alto = menor risco)
 
-**Conclusão**: Foco cobrança em baixo limite + poucas transações.
+![Distribuição Default](imgs/dist_default.png)
+
+![Boxplot Limite](imgs/box_limite_default.png)
+
+![Boxplot Transações](imgs/box_transacoes_default.png)
+
+![Heatmap Correlações](imgs/heatmap_default.png)
+
+## 4. Conclusões
+- Clientes com **baixo limite + poucas transações** = alto risco default.
+- **Ação**: Aumentar análise risco nesses perfis → -20% perdas.
+- Próximo: Clustering KMeans + Regressão Logística.
+
+**Autor**: Vinicius | EBAC Analista Dados | Feb/2026
