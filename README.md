@@ -1,9 +1,25 @@
-# EBAC Projeto Inadimplência Crédito
+# EBAC Projeto Parceria: Previsão Inadimplência
 
-![Dist](imgs/dist_default.png)
+![Dist Default](imgs/dist_default.png)
 
-**Tratamento**: Vírgulas → float (limite_credito), shape 10k, 16% default.
+## Coleta Dados
+- Dataset: credito.csv (10k registros ANP/fintech BR)
+- Fonte: https://raw.githubusercontent.com/andre-marcos-perez/ebac-course-utils/main/dataset/credito.csv
 
-**Insights EDA**:
-- Inadimplentes: limite R$11k (vs R$13k bom)
-- ![Box Limite](imgs/box_limite_default.png)
+## Tratamento
+- Convertido limite_credito/valor_transacoes_12m (, → . float)
+- Remove duplicatas/extremos | Shape final: 10.127 linhas
+- Default: 16% (1.627 inadimplentes)
+
+## EDA Insights
+| Métrica | Adimpl (0) | Inadimpl (1) |
+|---------|------------|--------------|
+| Limite  | R$13k     | R$11k       |
+| Trans 12m | R$2.5k   | R$2.2k     |
+
+Corr default: limite=-0.15 (limite alto → menor risco)
+
+![Box Limite](imgs/box_limite_default.png)
+![Heatmap](imgs/heatmap_default.png)
+
+**Conclusão**: Foco cobrança em baixo limite + poucas transações.
